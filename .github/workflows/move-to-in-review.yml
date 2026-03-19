@@ -47,7 +47,7 @@ jobs:
               run: |
                 updatedAt="$( gh api graphql -f query='
                 mutation($issueId:ID!, $projectId:ID!) {
-                    updateProjectV2ItemFieldValue(input: {projectId: $projectId, fieldId: "${{env.STATUS_FIELD_ID}}", itemId: $issueId, value: singleSelectOptionId: "${{env.IN_REVIEW_OPTION_ID}}"}) {
+                    updateProjectV2ItemFieldValue(input: {projectId: $projectId, fieldId: "${{env.STATUS_FIELD_ID}}", itemId: $issueId, value: {singleSelectOptionId: "${{env.IN_REVIEW_OPTION_ID}}"}}) {
                         projectV2Item {
                             type
                             updatedAt
