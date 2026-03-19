@@ -40,7 +40,7 @@ jobs:
             - name: Change status to in review
               env:
                 GH_TOKEN: ${{ secrets.YOUR_ACCESS_TOKEN }}
-                PROJECT_ID: 21547487
+                PROJECT_ID: PVT_kwHOB3vcK84BSMnf
                 ISSUE_ID: ${{ env.LINKED_ISSUE_ID }} 
                 STATUS_FIELD_ID: 47fc9ee4
                 IN_REVIEW_OPTION_ID: 27bf1e05
