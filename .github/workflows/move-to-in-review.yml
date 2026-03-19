@@ -36,14 +36,45 @@ jobs:
                 echo "$linked_issue_id"
                 echo "PR-ID:"
                 echo ${{env.PR_ID}}
-                echo "LINKED_ISSUE_ID=$linked_issue_id" >> $GITHUB_ENV
+                echo "LINKED_ISSUE_ID=$linked_issue_id" >> $GITHUB_ENV  
+            - name: Get node id of project
+              id: get-project-id
+              env:
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN}}
+                ORGANIZATION: LanderDebeir
+                PROJECT_NUMBER: 1
+              uses: monry/actions-get-project-id@v2
+              with:
+                github-token: ${{ secrets.GITHUB_TOKEN }}
+                project-owner: ${{ env.ORGANIZATION }}
+                project-number: ${{ env.PROJECT_NUMBER }}
+            - name: Get node id of status field
+              id: get-status-field-id
+              env:
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN}}
+                ORGANIZATION: LanderDebeir
+                PROJECT_NUMBER: 1
+                STATUS_FIELD_NAME: Status
+                OPTION_NAME: In review
+              uses: infinite-automations/gh-projects-field-ids@v1.0.0
+              with:
+                token: ${{ secrets.GITHUB_TOKEN }}
+                project-owner: ${{ env.ORGANIZATION }}
+                project-number: ${{ env.PROJECT_NUMBER }}
+                field-name: ${{ env.STATUS_FIELD_NAME }}
+                select-option-name: ${{ env.OPTION_NAME }}
+            - name: fill in environment variables
+              run: |
+                echo "PROJECT_ID=${{steps.get-project-id.outputs.project-id}}" >> $GITHUB_ENV
+                echo "STATUS_FIELD_ID=${{steps.get-status-field-id.outputs.field-id}}" >> $GITHUB_ENV
+                echo "IN_REVIEW_OPTION_ID=${{steps.get-status-field-id.outputs.option-id}}" >> $GITHUB_ENV
             - name: Change status to in review
               env:
                 GH_TOKEN: ${{ secrets.YOUR_ACCESS_TOKEN }}
-                PROJECT_ID: PVT_kwHOB3vcK84BSMnf
+                PROJECT_ID: ${{ env.PROJECT_ID }}
                 ISSUE_ID: ${{ env.LINKED_ISSUE_ID }} 
-                STATUS_FIELD_ID: PVTSSF_lAHOB3vcK84BSMnfzg_zWUg
-                IN_REVIEW_OPTION_ID: 27bf1e05
+                STATUS_FIELD_ID: ${{env.STATUS_FIELD_ID}}
+                IN_REVIEW_OPTION_ID: ${{env.IN_REVIEW_OPTION_ID}}
               run: |
                 updatedAt="$( gh api graphql -f query='
                 mutation($issueId:ID!, $projectId:ID!) {
