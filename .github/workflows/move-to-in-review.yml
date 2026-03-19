@@ -12,7 +12,7 @@ jobs:
                 GITHUB_TOKEN: ${{ secrets.YOUR_ACCESS_TOKEN }}
                 ORGANIZATION: LanderDebeir
                 PROJECT_NUMBER: 1
-                PR_ID: ${{ github.event.pull_request.number }}
+                PR_ID: ${{ github.event.pull_request.node_id }}
               run: |
                 linked_issue_id="$( gh api graphql -f query='
                 query($pr:ID!) {
