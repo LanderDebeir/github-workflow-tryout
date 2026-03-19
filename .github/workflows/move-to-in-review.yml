@@ -52,4 +52,5 @@ jobs:
                             type
                             updatedAt
                         }
+                    }
                 }' -f issueId=$ISSUE_ID -f projectId=$PROJECT_ID --jq '.data.updateProjectV2ItemFieldValue.projectV2Item.updatedAt')"
